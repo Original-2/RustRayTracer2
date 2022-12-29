@@ -13,4 +13,4 @@ TODO:
  all contributions are welcome
 
 Results:
-![render]( finalmente.png)
+![render]( final.png)
