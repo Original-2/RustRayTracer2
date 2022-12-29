@@ -6,7 +6,6 @@ TODO:
   - make bitmap textures or similar work 
   - implement cylinders and curves
   - implement texture functions
-  - implemet multi-threading
   - clean up code
   - implement depth of field
   
