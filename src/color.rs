@@ -102,7 +102,7 @@ impl Color {
 
     pub fn Clamp(&self) -> Color {
         Color {r: self.r.max(0.0).min(1.0),
-            g: self.g.exp().max(0.0).min(1.0),
-            b: self.b.exp().max(0.0).min(1.0)}
+            g: self.g.max(0.0).min(1.0),
+            b: self.b.max(0.0).min(1.0)}
     }
 }

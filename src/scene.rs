@@ -50,7 +50,7 @@ pub fn makeScene() -> Scene{
     let l2 = vec![MakePointLight(Color {r: 1.0, g: 1.0, b: 1.0}, Vector3 {x: 0.0, y: -1.0, z: 0.9})];
 
     let groundMaterial = Material {
-        color: Color{r: 1.0, g: 1.0, b: 1.0},
+        color: Color{r: 0.3, g: 0.6, b: 0.3},
         absorb_color: Color{r: 0.0, g: 0.0, b: 0.0},
         diff: 0.8,
         spec: 0.2,
@@ -58,7 +58,7 @@ pub fn makeScene() -> Scene{
         refr: 0.0,
         rindex: 1.0,
         m_texture: Bmp_From_file(String::from("../textures/floor.bmp")),
-        use_m_texture: true,};
+        use_m_texture: false,};
     let mirrorMaterial = Material {
         color: Color{r: 0.9, g: 0.9, b: 0.9},
         absorb_color: Color{r: 0.0, g: 0.0, b: 0.0},
@@ -90,15 +90,15 @@ pub fn makeScene() -> Scene{
         m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
         use_m_texture: false,};
     let writeWall = Material {
-        color: Color{r: 1.0, g: 1.0, b: 1.0},
+        color: Color{r: 0.8, g: 0.8, b: 0.8},
         absorb_color: Color{r: 0.0, g: 0.0, b: 0.0},
         diff: 0.8,
         spec: 0.2,
-        refl: 0.0,
+        refl: 0.5,
         refr: 0.0,
         rindex: 1.0,
         m_texture: Bmp_From_file(String::from("../textures/board.bmp")),
-        use_m_texture: true,};
+        use_m_texture: false,};
     let blueGlass = Material {
         color: Color{r: 0.3, g: 0.3, b: 1.0},
         absorb_color: Color{r: 1.0, g: 1.0, b: 0.0},
@@ -110,27 +110,27 @@ pub fn makeScene() -> Scene{
         m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
         use_m_texture: false,};
     let writeGlass = Material {
-        color: Color{r: 1.0, g: 1.0, b: 1.0},
+        color: Color{r: 0.8, g: 0.8, b: 0.8},
         absorb_color: Color{r: 0.0, g: 0.0, b: 0.0},
         diff: 0.8,
         spec: 0.5,
-        refl: 0.0,
+        refl: 0.4,
         refr: 0.0,
         rindex: 1.0,
         m_texture: Bmp_From_file(String::from("../textures/earth.bmp")),
-        use_m_texture: true,};
+        use_m_texture: false,};
 
     let ground = makePlane(groundMaterial.clone(), Vector3 {x: 0.0, y: 0.0, z: 1.0}, 1.0);
     let ceiling = makePlane(writeWall.clone(), Vector3 {x: 0.0, y: 0.0, z: -1.0}, 1.0);
     let wall1 = makePlane(writeWall.clone(), Vector3 {x: 0.0, y: -1.0, z: 0.0}, 1.0);
     let wall2 = makePlane(blueWall.clone(), Vector3 {x: -1.0, y: 0.0, z: 0.0}, 1.0);
     let wall3 = makePlane(redWall.clone(), Vector3 {x: 1.0, y: 0.0, z: 0.0}, 1.0);
-    let wall4 = makePlane(writeWall.clone(), Vector3 {x: 0.0, y: 1.0, z: 0.0}, 1.0);
+    //let wall4 = makePlane(writeWall.clone(), Vector3 {x: 0.0, y: 1.0, z: 0.0}, 1.0);
     let ball1 = makeSphere(writeGlass.clone(), Vector3 {x: 0.5, y: 0.2, z: -0.6} , 0.4);
     let ball2 = makeSphere(blueGlass.clone(), Vector3 {x: -0.5, y: 0.2, z: -0.6}, 0.4);
 
 
-    let planes = vec![ground, ceiling, wall1, wall2, wall3, wall4];
+    let planes = vec![ground, ceiling, wall1, wall2, wall3];
     let spheres = vec![ball1, ball2];
 
     //for i in otemp {
@@ -141,7 +141,7 @@ pub fn makeScene() -> Scene{
 
     let out = Scene {
         m_camera: cam,
-        m_ambient_color: Color {r: 0.1, g: 0.1, b: 0.1},
+        m_ambient_color: Color {r: 0.4, g: 0.2, b: 0.3},
         m_plights: l2,
         m_rlights: l1,
         m_planes: planes,
@@ -251,7 +251,6 @@ impl Scene{
                 ret = coll.clone();
                 }
             }
-
         for o in self.m_spheres.clone() {
             let coll = o.collision(start, dir);
             if coll.clone().isHit() && coll.dist.clone() + 0.001 < ret.dist  && coll.at_object{

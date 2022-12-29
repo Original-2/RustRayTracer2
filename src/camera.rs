@@ -37,7 +37,4 @@ impl Camera {
         self.m_film.setColor(x, y, color);
     }
 
-    pub fn print(&self) -> () {
-        self.clone().m_film.save(String::from("hi.bmp"));
-    }
 }

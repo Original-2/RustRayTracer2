@@ -222,40 +222,4 @@ impl Bmp {
                                 b: (color.r * 255.0 + 0.5) as u8}
     }
 
-    pub fn save(self, filename: String) -> io::Result<()> {
-
-        let mut file = File::create(filename)?;
-
-        let mut bmp_data = Vec::with_capacity(self.m_bi.biSize as usize);
-
-
-        bmp_data.write_u16::<LittleEndian>(self.m_bf.bfType)?;
-        bmp_data.write_u32::<LittleEndian>(self.m_bf.bfSize)?;
-        bmp_data.write_u32::<LittleEndian>(self.m_bf.bfOffBits)?;
-        bmp_data.write_u16::<LittleEndian>(self.m_bf.bfReserved1)?;
-        bmp_data.write_u16::<LittleEndian>(self.m_bf.bfReserved2)?;
-
-        bmp_data.write_u32::<LittleEndian>(self.m_bi.biSize)?;
-        bmp_data.write_u32::<LittleEndian>(self.m_bi.biWidth)?;
-        bmp_data.write_u32::<LittleEndian>(self.m_bi.biHeight)?;
-        bmp_data.write_u16::<LittleEndian>(1)?; // num_planes
-        bmp_data.write_u16::<LittleEndian>(24)?; // bits_per_pixel
-        bmp_data.write_u32::<LittleEndian>(0)?; // compress_type
-        bmp_data.write_u32::<LittleEndian>(self.m_bi.biSizeImage)?;
-        bmp_data.write_u32::<LittleEndian>(self.m_bi.biXPelsPerMeter)?;
-        bmp_data.write_u32::<LittleEndian>(self.m_bi.biYPelsPerMeter)?;
-        bmp_data.write_u32::<LittleEndian>(0)?; // num_colors
-        bmp_data.write_u32::<LittleEndian>(0)?; // num_imp_colors
-
-
-        for y in 0..self.m_bi.biHeight {
-            for x in 0..self.m_bi.biWidth {
-                Write::write(&mut bmp_data, &[self.m_data[y as usize][x as usize].b, self.m_data[y as usize][x as usize].g, self.m_data[y as usize][x as usize].r])?;
-            }
-        }
-
-        file.write(&bmp_data)?;
-        Ok(())
-
-    }
 }

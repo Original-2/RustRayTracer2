@@ -59,7 +59,7 @@ impl Object for Plane {
             v -= v.floor();
             return self.m_material.clone().getTextureColor(u, v);
         } else{
-            return Color {r: 1.0, g: 1.0, b: 1.0};
+            return Color {r: self.m_material.color.r, g: self.m_material.color.g, b: self.m_material.color.b};
         }
     }
 
@@ -246,7 +246,7 @@ impl Object for Sphere {
 
             return self.clone().m_material.getTextureColor(u, v);
         }else{
-            return Color {r:1.0, g:1.0, b:1.0};
+            return Color {r: self.m_material.color.r, g: self.m_material.color.g, b: self.m_material.color.b};
         }
     }
 
@@ -269,11 +269,9 @@ impl Object for Sphere {
                 //println!("3456789");
                 if t1 > thc2 && thc2 > 0.001 {
                     let p = start + d * t1;
-                    println!("134");
                     return Collision_sphere(start, d, t1, p - self.m_o, false, self.clone());
                 }else if t2 > thc2 && thc2 > 0.001 {
                     let p = start + d * t2;
-                    println!("134");
                     return Collision_sphere(start, d, t2, self.m_o - p, true, self.clone());
                 }
             }

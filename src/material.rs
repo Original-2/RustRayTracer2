@@ -31,7 +31,7 @@ impl Material {
         if self.use_m_texture {
             return self.m_texture.getColor(u, v);
         }else{
-            return Color {r: 1.0, g: 1.0, b: 1.0};
+            return self.color;
         }
     }
 

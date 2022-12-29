@@ -5,7 +5,7 @@ use crate::Color;
 use crate::Collision;
 use crate::objects::Object;
 use crate::Vector3;
-
+use std::thread;
 use image::{ImageBuffer, Rgb};
 use std::cmp;
 
@@ -22,6 +22,11 @@ impl RayTracer {
     fn m_calcLocalIllumination(&self, coll: Collision, material: Material) -> Color {
         let r = coll.ray_dir.reflect(coll.n);
         let mut color = material.color * coll.plane.getTextureColor(coll.p);
+
+
+        if coll.at_plane {
+            color = material.color * coll.plane.getTextureColor(coll.p);
+        }
 
         if coll.at_sphere {
             color = material.color * coll.sphere.getTextureColor(coll.p);
@@ -58,14 +63,13 @@ impl RayTracer {
             }
         }
 
-
         return ret;
     }
 
     pub fn run(&self){
     let mut camera = self.m_scene.getCamera();
-    let w = camera.getW();
-    let h = camera.getH();
+    let w = 300; //camera.getW();
+    let h = 300; //camera.getH();
 
     let mut image = ImageBuffer::<Rgb<u8>, Vec<u8>>::new(w as u32, h as u32);
 
@@ -78,21 +82,13 @@ impl RayTracer {
             let r = cmp::min((color.r*255.0).round() as u8, 255);
             let g = cmp::min((color.g*255.0).round() as u8, 255);
             let b = cmp::min((color.b*255.0).round() as u8, 255);
-            //println!("{} {}", i, j);
-            println!("{} {} {}", r, g, b);
-
             let pix = [r, g, b];
 
             image.put_pixel(i as u32, j as u32, Rgb(pix));
         }
     }
 
-
-        image.save("output1.png");
-
-
-
-
+    image.save("output2.png");
     }
 
     fn m_rayTraceing(&self, start: Vector3, dir: Vector3, weight: f64, depth: i64) -> Color{
