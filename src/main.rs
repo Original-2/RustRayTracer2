@@ -37,6 +37,75 @@ fn go(filename: String, h_from: i32, h: i32, w_from: i32, w: i32) {
 }
 
 fn main() {
+    let handle1 = thread::spawn(move || {
+        go(String::from("out1.png"), 0, 100, 0, 100);
+    });
+    let handle2 = thread::spawn(move || {
+        go(String::from("out2.png"), 100, 100, 0, 100);
+    });
+    let handle3 = thread::spawn(move || {
+        go(String::from("out3.png"), 200, 100, 0, 100);
+    });
+    let handle4 = thread::spawn(move || {
+        go(String::from("out4.png"), 300, 100, 0, 100);
+    });
+    let handle5 = thread::spawn(move || {
+        go(String::from("out5.png"), 0, 100, 100, 100);
+    });
+    let handle6 = thread::spawn(move || {
+        go(String::from("out6.png"), 100, 100, 100, 100);
+    });
+    let handle7 = thread::spawn(move || {
+        go(String::from("out7.png"), 200, 100, 100, 100);
+    });
+    let handle8 = thread::spawn(move || {
+        go(String::from("out8.png"), 300, 100, 100, 100);
+    });
+    let handle9 = thread::spawn(move || {
+        go(String::from("out9.png"), 0, 100, 200, 100);
+    });
+    let handle10 = thread::spawn(move || {
+        go(String::from("out10.png"), 100, 100, 200, 100);
+    });
+    let handle11 = thread::spawn(move || {
+        go(String::from("out11.png"), 200, 100, 200, 100);
+    });
+    let handle12 = thread::spawn(move || {
+        go(String::from("out12.png"), 300, 100, 200, 100);
+    });
+    let handle13 = thread::spawn(move || {
+        go(String::from("out13.png"), 0, 100, 300, 100);
+    });
+    let handle14 = thread::spawn(move || {
+        go(String::from("out14.png"), 100, 100, 300, 100);
+    });
+    let handle15 = thread::spawn(move || {
+        go(String::from("out15.png"), 200, 100, 300, 100);
+    });
+    let handle16 = thread::spawn(move || {
+        go(String::from("out16.png"), 300, 100, 300, 100);
+    });
+
+
+
+    handle1.join().unwrap();
+    handle2.join().unwrap();
+    handle3.join().unwrap();
+    handle4.join().unwrap();
+    handle5.join().unwrap();
+    handle6.join().unwrap();
+    handle7.join().unwrap();
+    handle8.join().unwrap();
+    handle9.join().unwrap();
+    handle10.join().unwrap();
+    handle11.join().unwrap();
+    handle12.join().unwrap();
+    handle13.join().unwrap();
+    handle14.join().unwrap();
+    handle15.join().unwrap();
+    handle16.join().unwrap();
+    
+    
     let mut image = ImageBuffer::<Rgb<u8>, Vec<u8>>::new(400 as u32,400 as u32);
 
     let mut img = image::open("out1.png").unwrap();
