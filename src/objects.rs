@@ -236,8 +236,8 @@ impl Object for Sphere {
             let n = (p - self.m_o).unitise();
             let b = n.dot(self.m_dz).acos();
             let a = (n.dot(self.m_dx) / b.sin()).max(-1.0).min(1.0).acos();
-            let v = b / 3.14159265358979311599796346854;
-            let mut u = a / 2.0 / 3.14159265358979311599796346854;
+            let v = b / std::f64::consts::PI;
+            let mut u = a / 2.0 / std::f64::consts::PI;
 
             if n.dot(self.m_dz * self.m_dx) < 0.0 {
                 u = 1.0 - u;
