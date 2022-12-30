@@ -36,7 +36,7 @@ pub fn makeScene() -> Scene{
         m_dir: Vector3 {x: 0.0, y: 1.0, z: 0.0},
         m_up: Vector3 {x: 0.0, y: 0.0, z: 1.0},
         m_w: 500,
-        m_h: 500,
+    m_h: 500,
         m_fovy: 45.0 * 3.14159265358979311599796346854 / 180.0,
         m_dist: 1.0,
         m_dw: (Vector3 {x: 0.0, y: 0.0, z: 1.0}  * ((45.0 * 3.14159265358979311599796346854 / 180.0)as f64).tan() * -1.0 * Vector3 {x: 0.0, y: 1.0, z: 0.0}).unitise() * ((45.0 * 3.14159265358979311599796346854 / 180.0)as f64).tan(),
@@ -55,7 +55,7 @@ pub fn makeScene() -> Scene{
         refl: 0.2,
         refr: 0.0,
         rindex: 1.0,
-        m_texture: Bmp_From_file(String::from("../textures/floor.bmp")),
+        m_texture: Some(Bmp_From_file(String::from("../textures/floor.bmp"))),
         use_m_texture: false,};
     let mirrorMaterial = Material {
         color: Color{r: 0.9, g: 0.9, b: 0.9},
@@ -65,7 +65,7 @@ pub fn makeScene() -> Scene{
         refl: 0.9,
         refr: 0.0,
         rindex: 1.0,
-        m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
+        m_texture: None,
         use_m_texture: false,};
     let redWall = Material {
         color: Color{r: 1.0, g: 0.0, b: 0.0},
@@ -75,7 +75,7 @@ pub fn makeScene() -> Scene{
         refl: 0.1,
         refr: 0.0,
         rindex: 1.0,
-        m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
+        m_texture: None,
         use_m_texture: false,};
     let blueWall = Material {
         color: Color{r: 0.0, g: 0.0, b: 1.0},
@@ -85,7 +85,7 @@ pub fn makeScene() -> Scene{
         refl: 0.1,
         refr: 0.0,
         rindex: 1.0,
-        m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
+        m_texture: None,
         use_m_texture: false,};
     let writeWall = Material {
         color: Color{r: 0.8, g: 0.8, b: 0.8},
@@ -95,7 +95,7 @@ pub fn makeScene() -> Scene{
         refl: 0.5,
         refr: 0.0,
         rindex: 1.0,
-        m_texture: Bmp_From_file(String::from("../textures/board.bmp")),
+        m_texture: Some(Bmp_From_file(String::from("../textures/board.bmp"))),
         use_m_texture: false,};
     let blueGlass = Material {
         color: Color{r: 0.3, g: 0.3, b: 1.0},
@@ -105,7 +105,7 @@ pub fn makeScene() -> Scene{
         refl: 0.4,
         refr: 0.6,
         rindex: 1.5,
-        m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
+        m_texture: None,
         use_m_texture: false,};
     let writeGlass = Material {
         color: Color{r: 0.8, g: 0.8, b: 0.8},
@@ -115,7 +115,7 @@ pub fn makeScene() -> Scene{
         refl: 0.4,
         refr: 0.0,
         rindex: 1.0,
-        m_texture: Bmp_From_file(String::from("../textures/earth.bmp")),
+    m_texture: Some(Bmp_From_file(String::from("../textures/earth.bmp"))),
         use_m_texture: false,};
 
     let ground = makePlane(groundMaterial.clone(), Vector3 {x: 0.0, y: 0.0, z: 1.0}, 1.0);
@@ -184,7 +184,7 @@ impl Scene{
                     refl: 0.4,
                     refr: 0.6,
                     rindex: 1.5,
-                    m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
+                    m_texture: None,
                     use_m_texture: false,},
             m_r: 0.0,
             m_o: Vector3 {x: 0.0, y: 0.0, z: 0.0},
@@ -201,7 +201,7 @@ impl Scene{
                     refl: 0.4,
                     refr: 0.6,
                     rindex: 1.5,
-                    m_texture: BmpNew(100, 100, Color {r: 0.0, g: 0.0, b: 0.0}),
+                    m_texture: None,
                     use_m_texture: false,},
                 m_d: 0.0,
                 m_n: Vector3 {x: 0.0, y: 0.0, z: 0.0},

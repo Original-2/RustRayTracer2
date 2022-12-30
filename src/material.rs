@@ -11,7 +11,7 @@ pub struct Material {
     pub refl: f64,
     pub refr: f64,
     pub rindex: f64,
-    pub m_texture: Bmp,
+    pub m_texture: Option <Bmp>,
     pub use_m_texture: bool,
     // m_texture_func - do after texture funcs implemented
     // use_m_texture_func - do after texture funcs implemented
@@ -24,12 +24,12 @@ impl Material {
 
     pub fn setTexture(&mut self, texture: Bmp) -> () {
         self.use_m_texture = true;
-        self.m_texture = texture;
+        self.m_texture = Some(texture);
     }
 
     pub fn getTextureColor(&self, u: f64, v:f64) -> Color {
         if self.use_m_texture {
-            return self.m_texture.getColor(u, v);
+            return self.m_texture.clone().unwrap().getColor(u, v);
         }else{
             return self.color;
         }
