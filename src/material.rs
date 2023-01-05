@@ -1,6 +1,7 @@
-use crate::color::Color;
-use crate::bmp::Bmp;
 use std::cmp::Ordering;
+
+use crate::bmp::Bmp;
+use crate::color::Color;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Material {
@@ -8,38 +9,39 @@ pub struct Material {
     pub absorb_color: Color,
     pub diff: f64,
     pub spec: f64,
-    pub refl: f64,
-    pub refr: f64,
-    pub rindex: f64,
-    pub m_texture: Option <Bmp>,
+    pub reflection: f64,
+    pub refraction: f64,
+    pub r_index: f64,
+    pub m_texture: Option<Bmp>,
     pub use_m_texture: bool,
     // m_texture_func - do after texture funcs implemented
     // use_m_texture_func - do after texture funcs implemented
 }
 
 impl Material {
-    pub fn hasTexture(self) -> bool {
+
+    pub fn has_texture(&self) -> bool {
         self.use_m_texture
     }
 
-    pub fn setTexture(&mut self, texture: Bmp) -> () {
+    pub fn set_texture(&mut self, texture: Bmp) -> () {
         self.use_m_texture = true;
         self.m_texture = Some(texture);
     }
 
-    pub fn getTextureColor(&self, u: f64, v:f64) -> Color {
-        if self.use_m_texture {
-            return self.m_texture.clone().unwrap().getColor(u, v);
-        }else{
-            return self.color;
+    pub fn get_texture_color(&self, u: f64, v: f64) -> Color {
+        return if self.use_m_texture {
+            self.m_texture.as_ref().unwrap().get_color(u, v)
+        } else {
+            self.color
         }
     }
 
-    pub fn compare(self, other: Material) -> std::cmp::Ordering {
-        if self.refl + 0.000001 < other.refl || ((self.refl - other.refl).abs() < 0.000001 && self.refr + 0.000001 < other.refr) {
-            return Ordering::Greater;
-        }else {
-            return Ordering::Less;
+    pub fn compare(&self, other: Material) -> Ordering {
+        return if self.reflection + 0.000001 < other.reflection || ((self.reflection - other.reflection).abs() < 0.000001 && self.refraction + 0.000001 < other.refraction) {
+            Ordering::Greater
+        } else {
+            Ordering::Less
         }
     }
 
