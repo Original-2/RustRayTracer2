@@ -1,3 +1,21 @@
+use std::fs::remove_file;
+use std::thread;
+
+use image;
+use image::{GenericImageView, ImageBuffer};
+use image::Rgb;
+
+use crate::collision::Collision;
+use crate::color::Color;
+use crate::light::RectLight;
+use crate::material::Material;
+use crate::objects::Plane;
+use crate::objects::Sphere;
+use crate::raytracer::RayTracer;
+use crate::scene::make_scene;
+use crate::scene::Scene;
+use crate::vector3::Vector3;
+
 mod vector3;
 mod color;
 mod bmp;
@@ -10,33 +28,16 @@ mod scene;
 mod raytracer;
 
 
-use crate::color::Color;
-use crate::material::Material;
-use crate::vector3::Vector3;
-use crate::collision::Collision;
-use crate::objects::Sphere;
-use crate::objects::Plane;
-use crate::light::RectLight;
-use crate::scene::Scene;
-use crate::raytracer::RayTracer;
-use crate::scene::makeScene;
-use image;
-use image::ImageBuffer;
-use image::GenericImageView;
-
-use image::Rgb;
-use image::GenericImage;
-
-use std::thread;
 fn go(filename: String, h_from: i32, h: i32, w_from: i32, w: i32) {
-    let scene = makeScene();
-    let engine = RayTracer{
+    let scene = make_scene();
+    let engine = RayTracer {
         m_scene: scene
     };
     engine.run(filename, h_from, h, w_from, w);
 }
 
 fn main() {
+
     let handle1 = thread::spawn(move || {
         go(String::from("out1.png"), 0, 100, 0, 100);
     });
@@ -86,8 +87,6 @@ fn main() {
         go(String::from("out16.png"), 300, 100, 300, 100);
     });
 
-
-
     handle1.join().unwrap();
     handle2.join().unwrap();
     handle3.join().unwrap();
@@ -104,153 +103,37 @@ fn main() {
     handle14.join().unwrap();
     handle15.join().unwrap();
     handle16.join().unwrap();
-    
-    
-    let mut image = ImageBuffer::<Rgb<u8>, Vec<u8>>::new(400 as u32,400 as u32);
 
-    let mut img = image::open("out1.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
+    let mut image = ImageBuffer::<Rgb<u8>, Vec<u8>>::new(400 as u32, 400 as u32);
+
+    populate_final_image_with_part(&mut image, "out1.png", 0, 0);
+    populate_final_image_with_part(&mut image, "out2.png", 100, 0);
+    populate_final_image_with_part(&mut image, "out3.png", 200, 0);
+    populate_final_image_with_part(&mut image, "out4.png", 300, 0);
+    populate_final_image_with_part(&mut image, "out5.png", 0, 100);
+    populate_final_image_with_part(&mut image, "out6.png", 100, 100);
+    populate_final_image_with_part(&mut image, "out7.png", 200, 100);
+    populate_final_image_with_part(&mut image, "out8.png", 300, 100);
+    populate_final_image_with_part(&mut image, "out9.png", 0, 200);
+    populate_final_image_with_part(&mut image, "out10.png", 100, 200);
+    populate_final_image_with_part(&mut image, "out11.png", 200, 200);
+    populate_final_image_with_part(&mut image, "out12.png", 300, 200);
+    populate_final_image_with_part(&mut image, "out13.png", 0, 300);
+    populate_final_image_with_part(&mut image, "out14.png", 100, 300);
+    populate_final_image_with_part(&mut image, "out15.png", 200, 300);
+    populate_final_image_with_part(&mut image, "out16.png", 300, 300);
+
+    image.save("../result.png").expect("Error while saving image");
+}
+
+fn populate_final_image_with_part(image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>, source : &str, y : u32, x : u32) {
+    let source_img = image::open(source).unwrap();
+    for iy in 0..100 {
+        for ix in 0..100 {
+            let p = source_img.get_pixel(ix, iy);
             let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y) as u32, (x) as u32, Rgb(pix));
+            image.put_pixel((iy + y) as u32, (ix + x) as u32, Rgb(pix));
         }
     }
-
-    let mut img = image::open("out2.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+100) as u32, (x) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out3.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+200) as u32, (x) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out4.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+300) as u32, (x) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out5.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y) as u32, (x+100) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out6.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+100) as u32, (x+100) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out7.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+200) as u32, (x+100) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out8.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+300) as u32, (x+100) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out9.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y) as u32, (x+200) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out10.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+100) as u32, (x+200) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out11.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+200) as u32, (x+200) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out12.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+300) as u32, (x+200) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out13.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y) as u32, (x+300) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out14.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+100) as u32, (x+300) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out15.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+200) as u32, (x+300) as u32, Rgb(pix));
-        }
-    }
-
-    let mut img = image::open("out16.png").unwrap();
-    for y in 0..100 {
-        for x in 0..100 {
-            let p = img.get_pixel(x, y);
-            let pix = [p[0], p[1], p[2]];
-            image.put_pixel((y+300) as u32, (x+300) as u32, Rgb(pix));
-        }
-    }
-    image.save("finalmente.png");
-
+    remove_file(source).unwrap();
 }
