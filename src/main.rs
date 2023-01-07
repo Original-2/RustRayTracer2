@@ -123,7 +123,7 @@ fn main() {
     populate_final_image_with_part(&mut image, "out15.png", 200, 300);
     populate_final_image_with_part(&mut image, "out16.png", 300, 300);
 
-    image.save("../result.png").expect("Error while saving image");
+    image.save("result.png").expect("Error while saving image");
 }
 
 fn populate_final_image_with_part(image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>, source : &str, y : u32, x : u32) {
