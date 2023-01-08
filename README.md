@@ -12,3 +12,5 @@ TODO:
   - implement cylinders and curves
   - implement texture functions
   - implement depth of field
+  - add external files to describe scene
+  - animation
